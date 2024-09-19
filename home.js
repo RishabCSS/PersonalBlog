@@ -1,6 +1,6 @@
 // Import Firebase modules for authentication and Firestore
 import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { getFirestore, doc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 
 // Firebase configuration (replace with your own project settings)
@@ -52,12 +52,21 @@ loadPosts(); // Load posts on page load
 document.getElementById('newPostForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent form from reloading the page
 
-    const title = document.getElementById('post-title').value;  // Get the post title
-    const content = document.getElementById('post-content').value; // Get the post content
+    const title = document.getElementById('post-title').value.trim();  // Get the post title
+    const content = document.getElementById('post-content').value.trim(); // Get the post content
+
+    // Check if title or content is empty
+    if (title === '' || content === '') {
+        alert('Title and content cannot be empty.');
+        return;
+    }
+
+    // Generate a unique ID based on the title and timestamp
+    const uniqueId = title.replace(/\s+/g, '_') + '_' + Date.now();
 
     try {
-        // Add new post to Firestore
-        await addDoc(collection(db, "posts"), {
+        // Add new post to Firestore with a custom document ID
+        await setDoc(doc(db, "posts", uniqueId), {
             title: title,
             content: content,
         });
