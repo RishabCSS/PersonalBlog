@@ -1,32 +1,41 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyCRwdpGmKCKxIBLT3K11b5yrQEtbZ1zCX0",
-    authDomain: "personalblog-f65fe.firebaseapp.com",
-    projectId: "personalblog-f65fe",
-    storageBucket: "personalblog-f65fe.appspot.com",
-    messagingSenderId: "724788615670",
-    appId: "1:724788615670:web:aa703be5822abb11b70fd7",
-    measurementId: "G-DH9DD43V51"
-  };
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-// Handle login form submission
+// Initialize Firebase Authentication
+const auth = getAuth();
+
+// Handle Login
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
 
-    auth.signInWithEmailAndPassword(email, password)
+    signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Login successful
             alert('Login successful!');
             window.location.href = 'homepage.html'; // Redirect to another page
         })
         .catch((error) => {
-            // Handle errors
-            const errorMessage = error.message;
-            document.getElementById('error-message').innerText = errorMessage;
+            // Display login error
+            document.getElementById('login-error-message').innerText = error.message;
+        });
+});
+
+// Handle Sign Up
+document.getElementById('signupForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Sign-up successful
+            alert('Sign-up successful! You can now log in.');
+        })
+        .catch((error) => {
+            // Display sign-up error
+            document.getElementById('signup-error-message').innerText = error.message;
         });
 });
