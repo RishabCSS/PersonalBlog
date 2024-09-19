@@ -1,8 +1,9 @@
+// Import Firebase modules for authentication and Firestore
 import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 
-// Firebase config
+// Firebase configuration (replace with your own project settings)
 const firebaseConfig = {
     apiKey: "AIzaSyCRwdpGmKCKxIBLT3K11b5yrQEtbZ1zCX0",
     authDomain: "personalblog-f65fe.firebaseapp.com",
@@ -18,80 +19,52 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Handle Logout
+// Function to handle logout
 document.getElementById('logout').addEventListener('click', function() {
     signOut(auth).then(() => {
         alert('Logged out!');
-        window.location.href = 'login.html';
+        window.location.href = 'login.html'; // Redirect to login page
     }).catch((error) => {
-        console.log(error.message);
+        console.log('Error logging out:', error.message);
     });
 });
 
-// Load Blog Posts
-const postsContainer = document.getElementById('posts-container');
-async function loadPosts() {
-    const querySnapshot = await getDocs(collection(db, "posts"));
-    querySnapshot.forEach((doc) => {
-        const post = doc.data();
-        const postElement = document.createElement('div');
-        postElement.innerHTML = `<h3>${post.title}</h3><p>${post.content}</p>`;
-        postsContainer.appendChild(postElement);
-    });
-}
-loadPosts();
-
-// Handle New Post Submission
-document.getElementById('newPostForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    const title = document.getElementById('post-title').value;
-    const content = document.getElementById('post-content').value;
-
-    try {
-        await addDoc(collection(db, "posts"), {
-            title: title,
-            content: content,
-        });
-        alert('Post published!');
-        postsContainer.innerHTML = ''; // Clear old posts
-        loadPosts(); // Reload posts
-    } catch (error) {
-        console.log(error.message);
-    }
-});
-
-
-
-
-
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
-
-// Initialize Firestore
-const db = getFirestore(app);
-
-// Adding a new post to Firestore
-async function addNewPost(title, content) {
-    try {
-        await addDoc(collection(db, "posts"), {
-            title: title,
-            content: content,
-        });
-        console.log('Post added to Firestore');
-    } catch (error) {
-        console.error('Error adding post: ', error);
-    }
-}
-
-// Fetching posts from Firestore
+// Function to load blog posts from Firestore
 async function loadPosts() {
     const postsContainer = document.getElementById('posts-container');
-    const querySnapshot = await getDocs(collection(db, "posts"));
-    
-    querySnapshot.forEach((doc) => {
-        const post = doc.data();
-        const postElement = document.createElement('div');
-        postElement.innerHTML = `<h3>${post.title}</h3><p>${post.content}</p>`;
-        postsContainer.appendChild(postElement);
-    });
+    postsContainer.innerHTML = ''; // Clear existing posts
+    try {
+        const querySnapshot = await getDocs(collection(db, "posts")); // Fetch posts
+        querySnapshot.forEach((doc) => {
+            const post = doc.data();
+            // Create an HTML element for each post
+            const postElement = document.createElement('div');
+            postElement.innerHTML = `<h3>${post.title}</h3><p>${post.content}</p>`;
+            postsContainer.appendChild(postElement); // Add post to container
+        });
+    } catch (error) {
+        console.log('Error loading posts:', error.message);
+    }
 }
+loadPosts(); // Load posts on page load
+
+// Handle new post submission
+document.getElementById('newPostForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent form from reloading the page
+
+    const title = document.getElementById('post-title').value;  // Get the post title
+    const content = document.getElementById('post-content').value; // Get the post content
+
+    try {
+        // Add new post to Firestore
+        await addDoc(collection(db, "posts"), {
+            title: title,
+            content: content,
+        });
+        alert('Post published!'); // Notify user
+        document.getElementById('newPostForm').reset(); // Reset form
+        loadPosts(); // Reload posts to include the new one
+    } catch (error) {
+        console.log('Error adding post:', error.message);
+    }
+});
