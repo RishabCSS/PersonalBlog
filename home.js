@@ -62,7 +62,7 @@ document.getElementById('newPostForm').addEventListener('submit', async function
     }
 
     // Generate a unique ID based on the title and timestamp
-    const uniqueId = title.replace(/\s+/g, '_');
+    const uniqueId = title;
 
     try {
         // Add new post to Firestore with a custom document ID
