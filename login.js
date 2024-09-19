@@ -28,7 +28,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         .then((userCredential) => {
             // Successful login
             alert('Login successful!');
-            window.location.href = 'homepage.html';  // Redirect to homepage
+            window.location.href = 'home.html';  // Redirect to homepage
         })
         .catch((error) => {
             // Handle errors
