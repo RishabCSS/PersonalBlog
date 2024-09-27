@@ -31,7 +31,7 @@ document.getElementById('newPostForm').addEventListener('submit', async function
     }
 
     try {
-        // Add new post to Firestore with auto-generated ID
+        // Add new post to Firestore with the title as the document ID
         const postRef = doc(db, "posts", title);
         await setDoc(postRef, {
             title: title,
