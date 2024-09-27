@@ -1,4 +1,3 @@
-
 // Import Firebase modules for authentication and Firestore
 import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { getFirestore, doc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
@@ -14,19 +13,19 @@ const firebaseConfig = {
     appId: "1:178560684307:web:95e7ed7d25216ef219cae6"
   };
 
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+document.addEventListener('DOMContentLoaded', function() {
 // Function to handle logout
 document.getElementById('logout').addEventListener('click', function() {
     signOut(auth).then(() => {
-        alert('Logged out!');
+        alert('Logged out successfully!');
         window.location.href = 'index.html'; // Redirect to login page
     }).catch((error) => {
-        console.log('Error logging out:', error.message);
+        console.error('Error logging out:', error.message);
     });
 });
 
@@ -35,7 +34,7 @@ async function loadPosts() {
     const postsContainer = document.getElementById('posts-container');
     postsContainer.innerHTML = ''; // Clear existing posts
     try {
-        const querySnapshot = await getDocs(collection(db, "posts")); // Fetch posts
+        const querySnapshot = await getDocs(collection(db, "posts")); // Fetch posts from the "posts" collection
         querySnapshot.forEach((doc) => {
             const post = doc.data();
             // Create an HTML element for each post
@@ -44,8 +43,9 @@ async function loadPosts() {
             postsContainer.appendChild(postElement); // Add post to container
         });
     } catch (error) {
-        console.log('Error loading posts:', error.message);
+        console.error('Error loading posts:', error.message);
     }
+}
 }
 loadPosts(); // Load posts on page load
 
@@ -62,8 +62,8 @@ document.getElementById('newPostForm').addEventListener('submit', async function
         return;
     }
 
-    // Generate a unique ID based on the title and timestamp
-    const uniqueId = title;
+    // Generate a unique ID based on the title and timestamp (for example, you can use Date.now() for unique ID)
+    const uniqueId = title + "_" + Date.now();
 
     try {
         // Add new post to Firestore with a custom document ID
@@ -75,6 +75,6 @@ document.getElementById('newPostForm').addEventListener('submit', async function
         document.getElementById('newPostForm').reset(); // Reset form
         loadPosts(); // Reload posts to include the new one
     } catch (error) {
-        console.log('Error adding post:', error.message);
+        console.error('Error adding post:', error.message);
     }
 });
