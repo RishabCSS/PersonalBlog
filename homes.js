@@ -6,14 +6,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/fireba
 
 // Firebase configuration (replace with your own project settings)
 const firebaseConfig = {
-    apiKey: "AIzaSyCRwdpGmKCKxIBLT3K11b5yrQEtbZ1zCX0",
-    authDomain: "personalblog-f65fe.firebaseapp.com",
-    projectId: "personalblog-f65fe",
-    storageBucket: "personalblog-f65fe.appspot.com",
-    messagingSenderId: "724788615670",
-    appId: "1:724788615670:web:aa703be5822abb11b70fd7",
-    measurementId: "G-DH9DD43V51"
-};
+    apiKey: "AIzaSyBYn2rBNT1Lp4v-h2JQIL1yshCEnsuof8c",
+    authDomain: "blog-44dcb.firebaseapp.com",
+    projectId: "blog-44dcb",
+    storageBucket: "blog-44dcb.appspot.com",
+    messagingSenderId: "178560684307",
+    appId: "1:178560684307:web:95e7ed7d25216ef219cae6"
+  };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
