@@ -1,55 +1,58 @@
-// Import Firebase modules
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-
-// Firebase configuration (replace with your own)
-const firebaseConfig = {
-    apiKey: "AIzaSyCRwdpGmKCKxIBLT3K11b5yrQEtbZ1zCX0",
-    authDomain: "personalblog-f65fe.firebaseapp.com",
-    projectId: "personalblog-f65fe",
-    storageBucket: "personalblog-f65fe.appspot.com",
-    messagingSenderId: "724788615670",
-    appId: "1:724788615670:web:aa703be5822abb11b70fd7",
-    measurementId: "G-DH9DD43V51"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// Handle Login
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault();  // Prevent page reload
-
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
-
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Successful login
-            alert('Login successful!');
-            window.location.href = 'home.html';  // Redirect to homepage
-        })
-        .catch((error) => {
-            // Handle errors
-            document.getElementById('login-error-message').innerText = error.message;
+<script type="module">
+{
+    apiKey: "AIzaSyBYn2rBNT1Lp4v-h2JQIL1yshCEnsuof8c",
+    authDomain: "blog-44dcb.firebaseapp.com",
+    projectId: "blog-44dcb",
+    storageBucket: "blog-44dcb.appspot.com",
+    messagingSenderId: "178560684307",
+    appId: "1:178560684307:web:95e7ed7d25216ef219cae6"
+  };
+{
+  const app = initializeApp(firebaseConfig);
+}
+</script>
+  
+  // Login function
+  document.getElementById('login-btn').addEventListener('click', () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+  
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        window.location.href = 'home.html';
+      })
+      .catch(error => {
+        document.getElementById('error-message').innerText = error.message;
+      });
+  });
+  
+  // Logout function
+  function logout() {
+    auth.signOut().then(() => {
+      window.location.href = 'login.html';
+    });
+  }
+  
+  // Load posts on blog page
+  function loadPosts() {
+    const postsContainer = document.getElementById('posts-container');
+    db.collection('posts').orderBy('created_at', 'desc').limit(5).get()
+      .then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          const post = doc.data();
+          postsContainer.innerHTML += `<div class="post"><h3>${post.title}</h3><p>${post.content}</p></div>`;
         });
-});
-
-// Handle Sign Up
-document.getElementById('signupForm').addEventListener('submit', function(event) {
-    event.preventDefault();  // Prevent page reload
-
-    const email = document.getElementById('signup-email').value;
-    const password = document.getElementById('signup-password').value;
-
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Successful signup
-            alert('Sign-up successful! You can now log in.');
-        })
-        .catch((error) => {
-            // Handle errors
-            document.getElementById('signup-error-message').innerText = error.message;
-        });
-});
+      });
+  }
+  
+  // Check auth state on blog page
+  if (window.location.pathname === '/blog.html') {
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = 'login.html';
+      } else {
+        loadPosts();
+      }
+    });
+  }
+  
