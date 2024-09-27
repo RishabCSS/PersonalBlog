@@ -1,23 +1,3 @@
-// Import Firebase modules for authentication and Firestore
-import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { getFirestore, doc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-
-// Firebase configuration (replace with your own project settings)
-const firebaseConfig = {
-    apiKey: "AIzaSyCRwdpGmKCKxIBLT3K11b5yrQEtbZ1zCX0",
-    authDomain: "personalblog-f65fe.firebaseapp.com",
-    projectId: "personalblog-f65fe",
-    storageBucket: "personalblog-f65fe.appspot.com",
-    messagingSenderId: "724788615670",
-    appId: "1:724788615670:web:aa703be5822abb11b70fd7",
-    measurementId: "G-DH9DD43V51"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
 
 // Function to handle logout
 document.getElementById('logout').addEventListener('click', function() {
