@@ -24,7 +24,7 @@ const db = getFirestore(app);
 document.getElementById('logout').addEventListener('click', function() {
     signOut(auth).then(() => {
         alert('Logged out!');
-        window.location.href = 'login.html'; // Redirect to login page
+        window.location.href = 'index.html'; // Redirect to login page
     }).catch((error) => {
         console.log('Error logging out:', error.message);
     });
