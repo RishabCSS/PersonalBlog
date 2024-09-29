@@ -50,12 +50,3 @@ window.onload = loadPosts;
 
 
 
-// Function to handle logout
-document.getElementById('logout').addEventListener('click', function() {
-    signOut(auth).then(() => {
-        alert('Logged out successfully!'); // Notify user of successful logout
-        window.location.href = 'index.html'; // Redirect to the login page or home page
-    }).catch((error) => {
-        console.error('Error logging out:', error.message); // Log any error
-    });
-});

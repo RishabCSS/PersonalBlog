@@ -1,7 +1,8 @@
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 
+// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBYn2rBNT1Lp4v-h2JQIL1yshCEnsuof8c",
     authDomain: "blog-44dcb.firebaseapp.com",
@@ -11,6 +12,7 @@ const firebaseConfig = {
     appId: "1:178560684307:web:95e7ed7d25216ef219cae6"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -43,13 +45,12 @@ document.getElementById('edit-button').addEventListener('click', function() {
 // Load user details when the page loads
 loadUserDetails();
 
-
 // Function to handle logout
 document.getElementById('logout').addEventListener('click', function() {
     signOut(auth).then(() => {
-        alert('Logged out!');
+        alert('Logged out successfully!'); // Notify user of successful logout
         window.location.href = 'index.html'; // Redirect to login page
     }).catch((error) => {
-        console.error('Error logging out:', error.message);
+        console.error('Error logging out:', error.message); // Log any error
     });
 });
