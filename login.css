@@ -19,7 +19,7 @@ body {
 }
 
 input {
-    width: 100%;
+    width: 90%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -43,4 +43,17 @@ button:hover {
 #error-message {
     color: red;
     margin-top: 10px;
+}
+
+
+#forgot-password {
+    display: block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #5cb85c;
+    font-size: 14px;
+}
+
+#forgot-password:hover {
+    color: #4cae4c;
 }

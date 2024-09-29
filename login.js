@@ -1,5 +1,5 @@
 // Import Firebase modules
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 
 // Firebase configuration (replace with your own)
@@ -52,4 +52,30 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
             // Handle errors
             document.getElementById('signup-error-message').innerText = error.message;
         });
+});
+
+// Handle Forgot Password
+document.getElementById('forgot-password').addEventListener('click', function(event) {
+    event.preventDefault();  // Prevent page reload
+
+    const email = document.getElementById('login-email').value;
+
+    if (email) {
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                // Password reset email sent
+                alert('Password reset email sent! Please check your inbox.');
+            })
+            .catch((error) => {
+                // Handle errors
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                document.getElementById('login-error-message').innerText = errorMessage;
+
+                // Optionally log the error code for debugging
+                console.error(`Error Code: ${errorCode}`, errorMessage);
+            });
+    } else {
+        alert('Please enter your email address to reset your password.');
+    }
 });
