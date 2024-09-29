@@ -32,27 +32,29 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         })
         .catch((error) => {
             // Handle errors
-            document.getElementById('login-error-message').innerText = error.message;
+            const errorMessage = mapErrorMessage(error.code);
+            document.getElementById('login-error-message').innerText = errorMessage;
         });
 });
 
-// Handle Sign Up
-document.getElementById('signupForm').addEventListener('submit', function(event) {
-    event.preventDefault();  // Prevent page reload
+// Function to map Firebase error codes to user-friendly messages
+function mapErrorMessage(errorCode) {
+    switch (errorCode) {
+        case 'auth/invalid-email':
+            return 'Please enter a valid email address.';
+        case 'auth/user-disabled':
+            return 'This user has been disabled.';
+        case 'auth/user-not-found':
+            return 'No user found with this email address.';
+        case 'auth/wrong-password':
+            return 'Incorrect password. Please try again.';
+        case 'auth/invalid-credential':
+            return 'Invalid credentials. Please check your details.';
+        default:
+            return 'Invalid credentials. Please check your details.';
+    }
+}
 
-    const email = document.getElementById('signup-email').value;
-    const password = document.getElementById('signup-password').value;
-
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Successful signup
-            alert('Sign-up successful! You can now log in.');
-        })
-        .catch((error) => {
-            // Handle errors
-            document.getElementById('signup-error-message').innerText = error.message;
-        });
-});
 
 // Handle Forgot Password
 document.getElementById('forgot-password').addEventListener('click', function(event) {
@@ -77,5 +79,20 @@ document.getElementById('forgot-password').addEventListener('click', function(ev
             });
     } else {
         alert('Please enter your email address to reset your password.');
+    }
+});
+
+// Toggle password visibility
+document.getElementById('toggle-password').addEventListener('click', function() {
+    const passwordInput = document.getElementById('login-password');
+    const inputType = passwordInput.getAttribute('type');
+    
+    // Toggle the input type between 'password' and 'text'
+    if (inputType === 'password') {
+        passwordInput.setAttribute('type', 'text');
+        this.textContent = '👁️'; // Change icon to open eye
+    } else {
+        passwordInput.setAttribute('type', 'password');
+        this.textContent = '👁️'; // Change icon to closed eye
     }
 });
