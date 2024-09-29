@@ -1,5 +1,5 @@
 // Import Firebase modules
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 
 // Firebase configuration (replace with your own)
@@ -26,12 +26,18 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Successful signup
-            alert('Sign-up successful! You can now log in.');
-            window.location.href = 'index.html'; // Redirect to login page
+            const user = userCredential.user;
+
+            // Send email verification
+            sendEmailVerification(user)
+                .then(() => {
+                    alert('Sign-up successful! A verification email has been sent to your email address. Please verify your email before logging in.');
+                    // Optionally, redirect to the login page or clear the form
+                    // window.location.href = 'index.html';
+                });
         })
         .catch((error) => {
             // Handle errors
-            const errorMessage = error.message;
-            document.getElementById('signup-error-message').innerText = errorMessage;
+            document.getElementById('signup-error-message').innerText = error.message;
         });
 });

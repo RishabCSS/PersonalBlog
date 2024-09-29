@@ -17,7 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Handle Login
+/// Handle Login
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();  // Prevent page reload
 
@@ -26,14 +26,22 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            // Successful login
-            alert('Login successful!');
-            window.location.href = 'home.html';  // Redirect to homepage
+            const user = userCredential.user;
+
+            // Check if the user's email is verified
+            if (user.emailVerified) {
+                // Successful login
+                alert('Login successful!');
+                window.location.href = 'home.html';  // Redirect to homepage
+            } else {
+                alert('Please verify your email before logging in.');
+                // Optionally, sign out the user
+                auth.signOut();
+            }
         })
         .catch((error) => {
             // Handle errors
-            const errorMessage = mapErrorMessage(error.code);
-            document.getElementById('login-error-message').innerText = errorMessage;
+            document.getElementById('login-error-message').innerText = error.message;
         });
 });
 
