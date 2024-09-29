@@ -42,3 +42,14 @@ document.getElementById('edit-button').addEventListener('click', function() {
 
 // Load user details when the page loads
 loadUserDetails();
+
+
+// Function to handle logout
+document.getElementById('logout').addEventListener('click', function() {
+    signOut(auth).then(() => {
+        alert('Logged out!');
+        window.location.href = 'index.html'; // Redirect to login page
+    }).catch((error) => {
+        console.error('Error logging out:', error.message);
+    });
+});
