@@ -70,3 +70,10 @@ footer {
     background-color: #333;
     color: white;
 }
+
+
+nav ul li a.active {
+    font-weight: bold;
+    text-decoration: underline;
+    color: #5cb85c; /* Adjust color to fit your theme */
+}
